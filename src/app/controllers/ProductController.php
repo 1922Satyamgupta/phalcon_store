@@ -6,7 +6,7 @@ class ProductController extends Controller{
 
     public function IndexAction(){
         $user = new Products();
-
+       
         $user->assign(
             $this->request->getPost(),
             [
@@ -17,8 +17,10 @@ class ProductController extends Controller{
                 'stock'
             ]
         );
-
-        $success = $user->save();
+        $values = Setting::find('id = 1');
+        $eventsManager = $this->di->get('EventsManager');
+        $val = $eventsManager->fire('NotificationListners:checkzip', $user, $values);
+        $success = $val->save();
 
         $this->view->success = $success;
 

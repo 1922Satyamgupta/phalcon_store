@@ -11,6 +11,8 @@ class OrdersController extends Controller
     }
 
     public function addorderAction() {
+      
+
         $order = new Orders();
         // print_r($this->request->getPost());
         // die();
@@ -24,8 +26,10 @@ class OrdersController extends Controller
                 'quantity'
             ]
         );
-
-        $order->save();
+        $values = Setting::find('id = 1');
+        $eventsManager = $this->di->get('EventsManager');
+        $val = $eventsManager->fire('NotificationListners:checkzip', $order, $values);
+        $val->save();
 
 
     }

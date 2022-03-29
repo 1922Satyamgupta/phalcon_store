@@ -1,0 +1,39 @@
+<body style="background-color:rgb(207, 159, 255);">
+    <h2 style="margin-left:35%;">Your Order</h2>
+
+    <?php echo $this->tag->form("setting/setting"); ?>
+
+    <p>
+        <label for="cars">Choose a field:</label>
+
+        <?php echo $this->tag->select('name_tag', ['tag'=>'tags', 'without tags'=>'without tags']);?>
+
+    <p>
+        <label for="email">default Price</label>
+        <?php echo $this->tag->textArea("price"); ?>
+    </p>
+    <p>
+        <label for="name">default Stock</label>
+        <?php echo $this->tag->textField("stock"); ?>
+</p>
+    <p>
+        <label for="name">default Zipcode</label>
+        <?php echo $this->tag->textField("zipcode"); ?>
+    </p>
+
+    <p>
+        <?php echo $this->tag->submitButton("Add"); ?>
+    </p>
+    </form>
+    <br>
+    <?php echo $this->tag->linkTo(
+        'orders/vieworder',
+        'view orders'
+    );
+    ?>
+    <br><br>
+    <?php echo $this->tag->linkTo(
+        'product',
+        'Add products'
+    );
+    ?>
