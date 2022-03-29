@@ -1,0 +1,41 @@
+<body style ="background-color:rgb(207, 159, 255);">
+<h2 style ="margin-left:35%;">Your Order</h2>
+
+<?php echo $this->tag->form(""); ?>
+
+    <p>
+        <label for="name">CustomerName</label>
+        <?php echo $this->tag->textField("cust_name"); ?>
+    </p>
+
+    <p>
+        <label for="email">Customer Address</label>
+        <?php echo $this->tag->textArea("cust_address"); ?>
+    </p>
+    <p>
+        <label for="name">Zipcode</label>
+        <?php echo $this->tag->textField("zipcode"); ?>
+    </p>
+    <p>
+        <label for="name">Product</label>
+        <?php echo $this->tag->select(['products', Products::find(), 'using' => ['name', 'name']]);?>
+    </p>
+    <p>
+        <label for="name">Quantity</label>
+        <?php echo $this->tag->textField("quantity"); ?>
+    </p>
+
+    <p>
+        <?php echo $this->tag->submitButton("Add"); ?>
+    </p>
+</form>
+<br>
+<?php echo $this->tag->linkTo(
+    'orders/vieworder',
+    'view orders');
+?>
+<br><br>
+<?php echo $this->tag->linkTo(
+    'product',
+    'Add products');
+?>

@@ -1,0 +1,40 @@
+<body style ="background-color:bisque;">
+<h2 style ="margin-left:35%;">Add Products</h2>
+
+<?php echo $this->tag->form(""); ?>
+
+    <p>
+        <label for="name">Name</label>
+        <?php echo $this->tag->textField("name"); ?>
+    </p>
+
+    <p>
+        <label for="email">Description</label>
+        <?php echo $this->tag->textArea("description"); ?>
+    </p>
+    <p>
+        <label for="name">Tag</label>
+        <?php echo $this->tag->textField("tag"); ?>
+    </p>
+    <p>
+        <label for="name">Price</label>
+        <?php echo $this->tag->textField("price"); ?>
+    </p>
+    <p>
+        <label for="name">Stock</label>
+        <?php echo $this->tag->textField("stock"); ?>
+    </p>
+
+    <p>
+        <?php echo $this->tag->submitButton("Add"); ?>
+    </p>
+</form>
+<br>
+<?php echo $this->tag->linkTo(
+    'product/addproduct',
+    'view product');
+?><br><br>
+ <?php echo $this->tag->linkTo(
+    'orders/addorder',
+    'Add your orders');
+?>

@@ -1,0 +1,37 @@
+<?php 
+if ($orders->count() > 0) { ?>
+    <table class="table table-bordered table-hover">
+        <thead class="thead-light">
+        <tr>
+            <th>Id</th>
+            <th>Customer name</th>
+            <th>Customer Address</th>
+            <th>Zipcode</th>
+            <th>Select Product</th>
+            <th>Quantity</th>
+        </tr>
+        </thead>
+        <tfoot>
+            <h1>
+                Orders
+            </h1>
+        </tfoot>
+        <tbody>
+        <?php foreach ($orders as $order) { ?>
+            <tr>
+                <td><?php echo $order->id; ?></td>
+                <td><?php echo $order->cust_name ?></td>
+                <td><?php echo $order->cust_address?></td>
+                <td><?php echo $order->zipcode ?></td>
+                <td><?php echo $order->products ?></td>
+                <td><?php echo $order->quantity ?></td>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+    <?php  //echo $this->tag->linkTo(["blog/index", "Go to blog "]);
+     }?>
+     <?php echo $this->tag->linkTo(
+    'orders/addorder',
+    'Add your orders');
+?>

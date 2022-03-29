@@ -1,0 +1,37 @@
+<?php
+
+echo "<h1>Hello World</h1>";
+
+echo PHP_EOL;
+
+echo $this->tag->linkTo(
+    'signup',
+    'Sign Up Here!'
+);
+
+
+echo"<h2> Admin View </h2>";
+if ($users->count() > 0) { ?>
+    <table class="table table-bordered table-hover">
+        <thead class="thead-light">
+        <tr>
+            <th>Id</th>
+            <th>name</th>
+            <th>email</th>
+        </tr>
+        </thead>
+        <tfoot>
+            <h1>Hello World!</h1>
+        </tfoot>
+        <tbody>
+        <?php foreach ($users as $user) { ?>
+            <tr>
+                <td><?php echo $user->id; ?></td>
+                <td><?php echo $user->name ?></td>
+                <td><?php echo $user->email ?></td>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+    <?php  //echo $this->tag->linkTo(["blog/index", "Go to blog "]);
+     }?>
