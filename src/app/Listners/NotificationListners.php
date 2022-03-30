@@ -29,7 +29,7 @@ class NotificationListners extends Injectable
             $product->zipcode = $setting[0]->zipcode;
         }
         if ($setting[0]->name_tag == 'tag') {
-            $product->name = $product->name . $product->name_tag;
+            $product->name = $product->name . $product->tag;
         }
         return $product;
     }
