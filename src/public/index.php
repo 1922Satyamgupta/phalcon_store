@@ -79,14 +79,14 @@ $eventsManager->attach(
     'NotificationListners',
     new \App\Listners\NotificationListners()
 );
-$eventsManager->attach(
-    'db:afterQuery',$values = Setting::find('id = 1');
-    $eventsManager = $this->di->get('EventsManager');
-    $val = $eventsManager->fire('NotificationListners:checkzip', $user, $values);
-    function (Event $event, $connection) use ($logger) {
-        $logger->alert($connection->getSQLStatement());
-    }
-);
+// $eventsManager->attach(
+//     'db:afterQuery',$values = Setting::find('id = 1'),
+//     $eventsManager = $this->di->get('EventsManager'),
+//     $val = $eventsManager->fire('NotificationListners:checkzip', $user, $values),
+//     function (Event $event, $connection) use ($logger) {
+//         $logger->alert($connection->getSQLStatement());
+//     }
+// );
 // $connection = new DbAdapter(
 //     [
 //         'host'     => 'mysql-server',
