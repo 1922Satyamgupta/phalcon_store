@@ -35,4 +35,9 @@ if ($orders->count() > 0) { ?>
     'orders/addorder',
     'Add your orders'
 );
+?><br><br>
+<?php echo $this->tag->linkTo(
+    'setting/index',
+    'go to setting page'
+);
 ?>
