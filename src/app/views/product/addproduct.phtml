@@ -1,15 +1,15 @@
-<?php 
+<?php
 if ($users->count() > 0) { ?>
     <table class="table table-bordered table-hover">
         <thead class="thead-light">
-        <tr>
-            <th>Id</th>
-            <th>name</th>
-            <th>description</th>
-            <th>tag</th>
-            <th>price</th>
-            <th>stock</th>
-        </tr>
+            <tr>
+                <th>Id</th>
+                <th>name</th>
+                <th>description</th>
+                <th>tag</th>
+                <th>price</th>
+                <th>stock</th>
+            </tr>
         </thead>
         <tfoot>
             <h1>
@@ -17,30 +17,33 @@ if ($users->count() > 0) { ?>
             </h1>
         </tfoot>
         <tbody>
-        <?php foreach ($users as $user) { ?>
-            <tr>
-                <td><?php echo $user->id; ?></td>
-                <td><?php echo $user->name ?></td>
-                <td><?php echo $user->description ?></td>
-                <td><?php echo $user->tag ?></td>
-                <td><?php echo $user->price ?></td>
-                <td><?php echo $user->stock ?></td>
-            </tr>
-        <?php } ?>
+            <?php foreach ($users as $user) { ?>
+                <tr>
+                    <td><?php echo $user->id; ?></td>
+                    <td><?php echo $user->name ?></td>
+                    <td><?php echo $user->description ?></td>
+                    <td><?php echo $user->tag ?></td>
+                    <td><?php echo $user->price ?></td>
+                    <td><?php echo $user->stock ?></td>
+                </tr>
+            <?php } ?>
         </tbody>
     </table>
-    <?php  //echo $this->tag->linkTo(["blog/index", "Go to blog "]);
-     }?>
-     <?php echo $this->tag->linkTo(
+<?php
+} ?>
+<?php echo $this->tag->linkTo(
     'orders/addorder',
-    'Add your orders');
+    'Add your orders'
+);
 ?><br>
 <br>
-  <?php echo $this->tag->linkTo(
+<?php echo $this->tag->linkTo(
     'product',
-    'go back');
+    'go back'
+);
 ?><br><br>
- <?php echo $this->tag->linkTo(
+<?php echo $this->tag->linkTo(
     'orders/vieworder',
-    'view orders');
+    'view orders'
+);
 ?>

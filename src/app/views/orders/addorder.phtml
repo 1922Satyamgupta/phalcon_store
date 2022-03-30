@@ -1,7 +1,7 @@
-<body style ="background-color:rgb(207, 159, 255);">
-<h2 style ="margin-left:35%;">Your Order</h2>
+<body style="background-color:rgb(207, 159, 255);">
+    <h2 style="margin-left:35%;">Your Order</h2>
 
-<?php echo $this->tag->form(""); ?>
+    <?php echo $this->tag->form(""); ?>
 
     <p>
         <label for="name">CustomerName</label>
@@ -18,7 +18,7 @@
     </p>
     <p>
         <label for="name">Product</label>
-        <?php echo $this->tag->select(['products', Products::find(), 'using' => ['name', 'name']]);?>
+        <?php echo $this->tag->select(['products', Products::find(), 'using' => ['name', 'name']]); ?>
     </p>
     <p>
         <label for="name">Quantity</label>
@@ -28,14 +28,16 @@
     <p>
         <?php echo $this->tag->submitButton("Add"); ?>
     </p>
-</form>
-<br>
-<?php echo $this->tag->linkTo(
-    'orders/vieworder',
-    'view orders');
-?>
-<br><br>
-<?php echo $this->tag->linkTo(
-    'product',
-    'Add products');
-?>
+    </form>
+    <br>
+    <?php echo $this->tag->linkTo(
+        'orders/vieworder',
+        'view orders'
+    );
+    ?>
+    <br><br>
+    <?php echo $this->tag->linkTo(
+        'product',
+        'Add products'
+    );
+    ?>

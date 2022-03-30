@@ -69,7 +69,7 @@ $logger  = new Logger(
     ]
 );
 $container->set(
-    'logger', 
+    'logger',
     $logger
 );
 //LOGGER---------------------------End------------------------------------------------------------------
@@ -81,9 +81,8 @@ $eventsManager->attach(
 );
 $eventsManager->attach(
     'db:afterQuery',
-    function (Event $event, $connection) use ($logger){
+    function (Event $event, $connection) use ($logger) {
         $logger->alert($connection->getSQLStatement());
-       
     }
 );
 // $connection = new DbAdapter(

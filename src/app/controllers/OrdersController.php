@@ -7,15 +7,13 @@ class OrdersController extends Controller
 {
     public function indexAction()
     {
-        
     }
 
-    public function addorderAction() {
-      
+    public function addorderAction()
+    {
+
 
         $order = new Orders();
-        // print_r($this->request->getPost());
-        // die();
         $order->assign(
             $this->request->getPost(),
             [
@@ -30,12 +28,10 @@ class OrdersController extends Controller
         $eventsManager = $this->di->get('EventsManager');
         $val = $eventsManager->fire('NotificationListners:checkzip', $order, $values);
         $val->save();
-
-
     }
 
-    public function vieworderAction() {
+    public function vieworderAction()
+    {
         $this->view->orders = Orders::find();
-        
     }
 }

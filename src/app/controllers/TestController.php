@@ -1,6 +1,7 @@
 <?php
 
 use Phalcon\Mvc\Controller;
+
 class TestController extends Controller
 {
     // public function checkconfigAction()
@@ -13,7 +14,8 @@ class TestController extends Controller
     //     $this->view->db = $config->get('db')->get('host');
 
     // }
-    public function EventAction() {
+    public function EventAction()
+    {
         $dateHelper =  new \App\Components\HelperClass();
         echo $dateHelper->getCurrentDate();
     }
