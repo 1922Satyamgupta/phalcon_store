@@ -5,6 +5,8 @@ namespace App\Listners;
 
 use Phalcon\Di\Injectable;
 use Phalcon\Events\Event;
+use Phalcon\Acl\Role;
+
 
 class NotificationListners extends Injectable
 {
@@ -32,5 +34,21 @@ class NotificationListners extends Injectable
             $product->name = $product->name .''.$product->tag;
         }
         return $product;
+    }
+    public function beforeHandleRequest(Event $event, \Phalcon\Mvc\Application $application) {
+        $aclfile = APP_PATH. '/security/acl.cache';
+        if(true == is_file($aclfile)) {
+            $acl = unserialize(file_get_contents($aclfile));
+        }
+        $role = $application->request->get('role');
+        $control = $this->router->getControllerName();
+        $act = $this->router->getActionName();
+       
+        if(!$role || true !== $acl->isAllowed($role, "$control", "$act")) {
+            echo "Access denied("; die;
+        } else {
+          
+        }
+
     }
 }

@@ -1,0 +1,14 @@
+<body style ="background-color:rgb(137, 207, 240);">
+<h2 style ="margin-left:35%;">Add Roles</h2>
+
+<?php echo $this->tag->form("addrole/register"); ?>
+
+   
+    <p>
+        <label for="role">Role:</label>
+        <?php echo $this->tag->textField("role"); ?>
+    </p>
+    <p>
+        <?php echo $this->tag->submitButton("Add"); ?>
+    </p>
+    </form>

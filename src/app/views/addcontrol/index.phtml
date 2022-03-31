@@ -1,0 +1,21 @@
+<body style ="background-color:bisque;">
+<h2 style ="margin-left:35%;">Add Controller and Action</h2>
+
+<?php echo $this->tag->form("addcontrol/register"); ?>
+
+   
+    <p>
+        <label for="name">Controller</label>
+        <?php echo $this->tag->textField("controller"); ?>
+    </p>
+
+    <p>
+        <label for="email">Action</label>
+        <?php echo $this->tag->textArea("action"); ?>
+    </p>
+  
+
+    <p>
+        <?php echo $this->tag->submitButton("Add"); ?>
+    </p>
+</form>

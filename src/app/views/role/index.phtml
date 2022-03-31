@@ -1,0 +1,76 @@
+<body style="background-color:rgb(207, 159, 255);">
+    <h2 style="margin-left:35%;">Choose Role:</h2>
+
+    <?php echo $this->tag->form("acl/buildacl"); ?>
+    <p>
+        <label for="name">Role:</label>
+        <?php echo $this->tag->select(['role', Roles::find(), 'using' => ['role', 'role']]); ?>
+    </p>
+    <?php if ($orders->count() > 0) { ?>
+        <?php foreach ($orders as $order) { ?>
+            <label for=""><?php echo $order->controller ?></label>
+            <input type="checkbox" name="controller[]" value="<?php echo $order->controller ?>">
+            <br>
+            <label for="" style="margin-left:4%;"><?php echo $order->action ?></label>
+            <input type="checkbox" name="action[]" value= "<?php echo $order->action ?>"><br><br>
+       <?php }?>
+       <?php }?>
+
+        
+            <br><br>
+    <!-- <?php
+if ($orders->count() > 0) { ?>
+    <table class="table table-bordered table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>Id</th>
+                <th>Controller</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <h1>
+                Orders
+            </h1>
+        </tfoot>
+        <tbody>
+            <?php foreach ($orders as $order) { ?>
+                <tr>
+                    <td><?php echo $order->id; ?></td>
+                    <td><?php echo $order->controller ?></td>
+                    <td><?php echo $order->action ?></td>
+    
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+<?php  //echo $this->tag->linkTo(["blog/index", "Go to blog "]);
+} ?> -->
+<?php echo $this->tag->linkTo(
+    'orders/addorder',
+    'Add your orders'
+);
+?><br><br>
+<?php echo $this->tag->linkTo(
+    'setting/index',
+    'go to setting page'
+);
+?>
+
+    <p>
+        <?php echo $this->tag->submitButton("Add"); ?>
+    </p>
+    </form>
+    <br>
+    <?php echo $this->tag->linkTo(
+        'orders/vieworder',
+        'view orders'
+    );
+    ?>
+    <br><br>
+    <?php echo $this->tag->linkTo(
+       
+        'addcontrol',
+        'add controller and action'
+    );
+    ?>

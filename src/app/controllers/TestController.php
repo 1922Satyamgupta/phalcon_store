@@ -14,9 +14,10 @@ class TestController extends Controller
     //     $this->view->db = $config->get('db')->get('host');
 
     // }
-    public function EventAction()
+    public function EventTestAction()
     {
         $dateHelper =  new \App\Components\HelperClass();
         echo $dateHelper->getCurrentDate();
+    
     }
 }

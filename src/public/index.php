@@ -79,6 +79,11 @@ $eventsManager->attach(
     'NotificationListners',
     new \App\Listners\NotificationListners()
 );
+$eventsManager->attach(
+    'application:beforeHandleRequest',
+    new \App\Listners\NotificationListners()
+);
+
 // $eventsManager->attach(
 //     'db:afterQuery',$values = Setting::find('id = 1'),
 //     $eventsManager = $this->di->get('EventsManager'),
@@ -99,6 +104,8 @@ $eventsManager->attach(
 // $connection->query(
 //     'SELECT * FROM users'
 // );
+// $eventsManager->fire('application:beforeHandleRequest', $application);
+$application->setEventsManager($eventsManager);
 $container->set(
     'EventsManager',
     $eventsManager
