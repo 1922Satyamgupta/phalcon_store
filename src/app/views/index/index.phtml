@@ -1,53 +1,89 @@
 <?php
 
-echo "<h1>Hello World</h1>";
 
 echo PHP_EOL;
 // $role = $this->request->get('role');
 
-// $aclfile = APP_PATH.'/security/acl.cache' ;
+// $aclfile = add_productP_PATH.'/security/acl.cache' ;
 // if(true === is_file($aclfile)) {
-//     $acl = unserialize(file_get_contents($aclfile));   
-//    if(!$role || true !== $acl->isAllowed($role, 'Order', 'Index')) {
+    //     $acl = unserialize(file_get_contents($aclfile));   
+    //    if(!$role || true !== $acl->isAllowed($role, 'Order', 'Index')) {
+        //----------------------------language translator-------------------------
+        
+
+    $hello = $this->locale->_('hello');
+    $add_product = $this->locale->_('add_product');
+    $add_order = $this->locale->_('add_order');
+    $product_table = $this->locale->_('product_table');
+    $order_table = $this->locale->_('order_table');
+    $setting = $this->locale->_('setting');
+    $add_role = $this->locale->_('add_role');
+    $add_comp = $this->locale->_('add_comp');
+    $all_comp = $this->locale->_('all_comp');
+    $add_user = $this->locale->_('add_user');
+    $lang = $this->locale->_('lang');
+    echo "<h1>".$hello."</h1>";
+
     echo $this->tag->linkTo([
         'order/addorder',
-        'place order!', 'class' => 'btn btn-primary m-2']
+        $add_order, 'class' => 'btn btn-primary m-2']
     );
 //    }
 
 // }
 echo $this->tag->linkTo([
     'product',
-    'product add!','class' => 'btn btn-primary m-2']
+    $product_table ,'class' => 'btn btn-primary m-2']
 );
 
 
 echo $this->tag->linkTo([
     'orders/vieworder',
-    'order table', 'class' => 'btn btn-primary m-2']
+    $order_table , 'class' => 'btn btn-primary m-2']
 );
 echo $this->tag->linkTo([
     'product/addproduct',
-    'product table', 'class' => 'btn btn-primary m-2']
+    $add_product, 'class' => 'btn btn-primary m-2']
 );
 echo $this->tag->linkTo([
     'setting',
-    'settings', 'class' => 'btn btn-primary m-2']
+    $setting, 'class' => 'btn btn-primary m-2']
 );
 echo $this->tag->linkTo([
     'acl',
-    'add role', 'class' => 'btn btn-primary m-2']
-);
-echo $this->tag->linkTo([
-    'acl/registercomponent',
-    'add component', 'class' => 'btn btn-primary m-2']
+    $add_role, 'class' => 'btn btn-primary m-2']
 );
 echo $this->tag->linkTo([
     'acl/allowuser',
-    'allow component', 'class' => 'btn btn-primary m-2']
+    $all_comp, 'class' => 'btn btn-primary m-2']
 );
 echo $this->tag->linkTo([
     'acl/adduser',
-    'add user', 'class' => 'btn btn-primary m-2']
+    $add_user, 'class' => 'btn btn-primary m-2']
 );
+?>
+
+<p>
+    <!-- <?php
+            echo $this->tag->select("lang", [
+                'english' => 'english',
+                'dutch' => 'dutch',
+                'french' => 'french'
+            ]); ?> -->
+            <p class="para">
+            <label for="lang"><?php echo $lang ; ?></label>
+            <select name="lang" id="lang" onchange="myfunc()">
+                <option value="">none</option>
+                <option value="english" >english</option>
+                <option value="french">french</option>
+                <option value="dutch">dutch</option>
+            </select>
+        </p>
+        <script>
+            function myfunc() {
+                var val = document.getElementById('lang').value;
+                window.location.href = "http://localhost:8080/?locale=" + val + "";
+        
+            }
+        </script>
 

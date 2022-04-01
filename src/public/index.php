@@ -13,6 +13,7 @@ use Phalcon\Config;
 use Phalcon\Events\Event;
 use Phalcon\Events\Manager as EventsManager;
 use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
+use App\translate\Locale;
 use Phalcon\Logger;
 use Phalcon\Logger\Adapter\Stream;
 include("../vendor/autoload.php");
@@ -35,7 +36,8 @@ $loader->registerDirs(
 $loader->registerNamespaces(
     [
         'App\Components' => APP_PATH . '/components',
-        'App\Listners' => APP_PATH . '/Listners'
+        'App\Listners' => APP_PATH . '/Listners',
+        'App\translate' => APP_PATH . '/translate'
     ]
 );
 $loader->register();
@@ -59,6 +61,7 @@ $container->set(
         return $url;
     }
 );
+$container->set('locale', (new Locale())->getTranslator());
 
 $application = new Application($container);
 //LOGGER--------------------------------Start-----------------------------------------------------
