@@ -1,13 +1,53 @@
-<h3> PRODUCT TASK </h3>
-<?php echo $this->tag->linkTo(
+<?php
+
+echo "<h1>Hello World</h1>";
+
+echo PHP_EOL;
+// $role = $this->request->get('role');
+
+// $aclfile = APP_PATH.'/security/acl.cache' ;
+// if(true === is_file($aclfile)) {
+//     $acl = unserialize(file_get_contents($aclfile));   
+//    if(!$role || true !== $acl->isAllowed($role, 'Order', 'Index')) {
+    echo $this->tag->linkTo([
+        'order/addorder',
+        'place order!', 'class' => 'btn btn-primary m-2']
+    );
+//    }
+
+// }
+echo $this->tag->linkTo([
     'product',
-    'go to product page');
-?><br><br>
-<?php echo $this->tag->linkTo(
-    'orders/addorder',
-    'add to order to customer');
-?><br><br>
-<?php echo $this->tag->linkTo(
+    'product add!','class' => 'btn btn-primary m-2']
+);
+
+
+echo $this->tag->linkTo([
+    'orders/vieworder',
+    'order table', 'class' => 'btn btn-primary m-2']
+);
+echo $this->tag->linkTo([
+    'product/addproduct',
+    'product table', 'class' => 'btn btn-primary m-2']
+);
+echo $this->tag->linkTo([
     'setting',
-    'go to setting page');
-?>
+    'settings', 'class' => 'btn btn-primary m-2']
+);
+echo $this->tag->linkTo([
+    'acl',
+    'add role', 'class' => 'btn btn-primary m-2']
+);
+echo $this->tag->linkTo([
+    'acl/registercomponent',
+    'add component', 'class' => 'btn btn-primary m-2']
+);
+echo $this->tag->linkTo([
+    'acl/allowuser',
+    'allow component', 'class' => 'btn btn-primary m-2']
+);
+echo $this->tag->linkTo([
+    'acl/adduser',
+    'add user', 'class' => 'btn btn-primary m-2']
+);
+

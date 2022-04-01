@@ -15,6 +15,7 @@ use Phalcon\Events\Manager as EventsManager;
 use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
 use Phalcon\Logger;
 use Phalcon\Logger\Adapter\Stream;
+include("../vendor/autoload.php");
 
 $config = new Config([]);
 

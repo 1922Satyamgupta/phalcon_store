@@ -2,103 +2,137 @@
 
 use Phalcon\Mvc\Controller;
 use Phalcon\Acl\Adapter\Memory;
-use Phalcon\Acl\Role;
 use Phalcon\Acl\Component;
-
+use Phalcon\Acl\Role;
 use Phalcon\Security\JWT\Builder;
 use Phalcon\Security\JWT\Signer\Hmac;
 use Phalcon\Security\JWT\Token\Parser;
 use Phalcon\Security\JWT\Validator;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class AclController extends Controller
 {
-    public function CreateTokenAction()
+    public function IndexAction()
     {
-        $signer  = new Hmac();
-
-        // Builder object
-        $builder = new Builder($signer);
-
-        $now        = new DateTimeImmutable();
-        $issued     = $now->getTimestamp();
-        $notBefore  = $now->modify('-1 minute')->getTimestamp();
-        $expires    = $now->modify('+1 day')->getTimestamp();
-        $passphrase = 'QcMpZ&b&mo3TPsPk668J6QH8JA$&U&m2';
-
-        // Setup
-        $builder
-            ->setAudience('https://target.phalcon.io')  // aud
-            ->setContentType('application/json')        // cty - header
-            ->setExpirationTime($expires)               // exp 
-            ->setId('abcd123456789')                    // JTI id 
-            ->setIssuedAt($issued)                      // iat 
-            ->setIssuer('https://phalcon.io')           // iss 
-            ->setNotBefore($notBefore)                  // nbf
-            ->setSubject('admin')   // sub
-            ->setPassphrase($passphrase)                // password 
-        ;
-
-        // Phalcon\Security\JWT\Token\Token object
-        $tokenObject = $builder->getToken();
-
-        // // The token
-        // echo $tokenObject->getToken();
-        // die;
     }
-    public function BuildAclAction()
+    public function RegisterroleAction()
+    {
+        $role = new Roles();
+        $role->assign(
+            $this->request->get(),
+            [
+                'role'
+            ]
+        );
+
+        $success = $role->save();
+
+        $this->view->success = $success;
+
+        if ($success) {
+            $this->view->message = "Register succesfully";
+        } else {
+            $this->view->message = "Not Register succesfully due to following reason: <br>" . implode("<br>", $role->getMessages());
+        }
+        $this->response->redirect('/');
+    }
+    public function RegistercomponentAction()
+    {
+        if ($this->request->get('controller')) {
+            $component = new Addcontrols();
+            $component->assign(
+                $this->request->get(),
+                [
+                    'controller', 'action'
+                ]
+            );
+
+            $success = $component->save();
+
+            $this->view->success = $success;
+
+            if ($success) {
+                $this->view->message = "Register succesfully";
+            } else {
+                $this->view->message = "Not Register succesfully due to following reason: <br>" . implode("<br>", $role->getMessages());
+            }
+            $this->response->redirect('/');
+        }
+    }
+    public function allowuserAction()
+    {
+    }
+    public function adduserAction()
+    {
+        if ($this->request->get('role')) {
+            $user = new Users();
+            $signer  = new Hmac();
+            $role = $this->request->getPost('role');
+            $name = $this->request->getPost('name');
+            $key = "example_key";
+            $payload = array(
+                "iss" => "http://example.org",
+                "aud" => "http://example.com",
+                "iat" => 1356999524,
+                "nbf" => 1357000000,
+                'name' => $name,
+                'role' => $role
+            );
+            $jwt = JWT::encode($payload, $key, 'HS256');
+
+            $user->assign(
+                $this->request->getPost(),
+                [
+                    'name',
+                    'email',
+                    'password',
+                   
+
+                ],
+                $user->role = $jwt
+            );
+
+            $success = $user->save();
+            header('Location: http://localhost:8080/');
+        }
+    }
+
+
+
+    public function buildaclAction()
     {
 
         $aclfile = APP_PATH . '/security/acl.cache';
         if (true !== is_file($aclfile)) {
             $acl = new Memory();
-            try {
-                $parser = new Parser();
-                $value = Users::find('email = "aaa"');
-                $tokenobject = $parser->parse($value[0]->role);
-                $now = new \DateTimeImmutable();
-                $expire = $now->getTimestamp();
-                $validator = new Validator($tokenobject, 100);
-                $validator->validateExpiration($expire);
-                $claims = $tokenobject->getClaims()->getPayload();
-                // print_r($claims['sub']);
-                // die;
-            } catch (\Exception $e) {
-                echo $e->message;
-                die;
-            }
-           
-            $acl->addRole($claims['sub']);
-            $acl->addComponent("Product", [
+
+            $acl->addRole("admin");
+            $acl->addComponent("Index", [
                 'index'
             ]);
-            $acl->allow($claims['sub'], "*", "*");
-
+            $acl->allow("admin", "*", "*");
             file_put_contents($aclfile, serialize($acl));
         } else {
             $acl = unserialize(file_get_contents($aclfile));
-            $value = Users::find('email != "aaa"');
-            // print_r($value[1]->name);
-            // die();
-            $parser = new Parser();
-            for($i = 0; $i < count($value); $i++) {
-                $tokenobject = $parser->parse($value[$i]->role);
-                // print_r($tokenobject);
-                // die;
-                $now = new \DateTimeImmutable();
-                $expire = $now->getTimestamp();
-                $validator = new Validator($tokenobject, 100);
-                $validator->validateExpiration($expire);
-                $claims = $tokenobject->getClaims()->getPayload();
-                // print_r($claims['sub']);
-                // die;
-                $acl->addRole($claims['sub']);
-                $acl->addComponent("Product", [
-                    'index'
-                ]);
-                $acl->allow($claims['sub'], "Product", "index");
+            $arr = $this->request->getPost();
+            $acl->addRole($arr['role']);
+           foreach ($arr['component'] as $key => $value) {
+                $componentObj = Addcontrols::find($value);
+                $acl->addComponent(
+                    $componentObj[0]->controller,
+                    [
+                        $componentObj[0]->action
+                    ]
+                );
             }
+            foreach ($arr['component'] as $key => $value) {
+                $componentObj = Addcontrols::find($value);
 
+                $acl->allow($arr['role'], $componentObj[0]->controller, $componentObj[0]->action);
+            }
             file_put_contents($aclfile, serialize($acl));
+            header("Location: http://localhost:8080/");
         }
     }
 }

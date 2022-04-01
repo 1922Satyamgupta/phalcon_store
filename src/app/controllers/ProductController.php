@@ -23,7 +23,6 @@ class ProductController extends Controller
         $eventsManager = $this->di->get('EventsManager');
         $val = $eventsManager->fire('NotificationListners:checkzip', $user, $values);
         $success = $val->save();
-
         $this->view->success = $success;
 
         if ($success) {

@@ -2,25 +2,19 @@
 
 namespace App\Listners;
 
-use DateTime;
-use Phalcon\Di\Injectable;
 use Phalcon\Events\Event;
-use Phalcon\Acl\Role;
+use Phalcon\Mvc\Controller;
+use Phalcon\Logger;
+use Phalcon\Security\JWT\Builder;
 use Phalcon\Security\JWT\Signer\Hmac;
 use Phalcon\Security\JWT\Token\Parser;
 use Phalcon\Security\JWT\Validator;
-
+use Phalcon\Di\Injectable;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class NotificationListners extends Injectable
 {
-    // public function afterSend(Event $event, \App\Components\HelperClass $component) {
-    //     $logger = $this->di->get('logger');
-    //     $logger->info('after Notification');
-    //  }
-    //  public function beforeSend(Event $event, \App\Components\HelperClass $component) {
-    //        $logger = $this->di->get('logger');
-    //        $logger->info('before Notification');
-    //    }
     public function checkzip(Event $event, $product, $setting)
     {
 
@@ -30,45 +24,37 @@ class NotificationListners extends Injectable
         if ($product->stock == null) {
             $product->stock = $setting[0]->stock;
         }
+        if ($setting[0]->name_tag == 'tags') {
+            $product->name = $product->name . ' ' . $product->tags;
+        }
         if ($product->zipcode == null) {
             $product->zipcode = $setting[0]->zipcode;
         }
-        if ($setting[0]->name_tag == 'tag') {
-            $product->name = $product->name .''.$product->tag;
-        }
+
         return $product;
     }
-    public function beforeHandleRequest(Event $event, \Phalcon\Mvc\Application $application) 
+    public function beforeHandleRequest(Event $event, \Phalcon\Mvc\Application $application)
     {
+        // print_r("hello");
+        // die ;
+        $controller = ucwords($this->router->getControllerName());
+        $action = ucwords($this->router->getActionName());
 
         $aclfile = APP_PATH . '/security/acl.cache';
-        $controller = ucwords($this->router->getControllerName());
-        $action = $this->router->getActionName();
-        $bearer = $application->request->get('bearer') ?? 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImN0eSI6ImFwcGxpY2F0aW9uXC9qc29uIn0.eyJhdWQiOlsiaHR0cHM6XC9cL3RhcmdldC5waGFsY29uLmlvIl0sImV4cCI6MTY0ODgxNDkwNSwianRpIjoiYWJjZDEyMzQ1Njc4OSIsImlhdCI6MTY0ODcyODUwNSwiaXNzIjoiaHR0cHM6XC9cL3BoYWxjb24uaW8iLCJuYmYiOjE2NDg3Mjg0NDUsInN1YiI6ImFkbWluIn0.hJp7gDMRd9lKI8DEvlEe7elakDzJgmMaDYtOcNH35hkJ4jzj28V-LTLDMVWKYueJcNoc9ToZo1wkQW_vRA-TqA';
-        // print_r($bearer);
-        // die;
+
+        $bearer = $application->request->get('bearer')?? "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZXhhbXBsZS5vcmciLCJhdWQiOiJodHRwOi8vZXhhbXBsZS5jb20iLCJpYXQiOjEzNTY5OTk1MjQsIm5iZiI6MTM1NzAwMDAwMCwibmFtZSI6Im1hZGh1ciIsInJvbGUiOiJhZG1pbiJ9.9pErq74Yt0SZI9sSM91-jzYMiodfovxhebdy7-yYjH4" ;
         if ($bearer) {
             if (true === is_file($aclfile)) {
                 $acl = unserialize(file_get_contents($aclfile));
-                try {
-                    $parser = new Parser();
-                    $tokenobject = $parser->parse($bearer);
-                    $now = new \DateTimeImmutable();
-                    $expire = $now->getTimestamp();
-                    $validator = new Validator($tokenobject, 100);
-                    $validator->validateExpiration($expire);
-                    $claims = $tokenobject->getClaims()->getPayload();
-                    // print_r($acl);
-                    // die;
-                } catch (\Exception $e) {
-                    echo "bearer not find";
-                    die;
-                }
-                if ($claims['sub'] == 'admin') {
+                $key = "example_key";
+                $jwt = $bearer;
+                $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
+
+                if ($decoded->role == 'admin') {
                     $action = ucwords($this->router->getActionName());
                 }
 
-                if (true !== $acl->isAllowed($claims['sub'], $controller, $action)) {
+                if (true !== $acl->isAllowed($decoded->role, $controller, $action)) {
                     echo "Access Denied";
                     // print_r($acl);
                     die();
