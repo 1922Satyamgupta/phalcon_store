@@ -2,10 +2,13 @@
 
 namespace App\Listners;
 
-
+use DateTime;
 use Phalcon\Di\Injectable;
 use Phalcon\Events\Event;
 use Phalcon\Acl\Role;
+use Phalcon\Security\JWT\Signer\Hmac;
+use Phalcon\Security\JWT\Token\Parser;
+use Phalcon\Security\JWT\Validator;
 
 
 class NotificationListners extends Injectable
@@ -35,20 +38,46 @@ class NotificationListners extends Injectable
         }
         return $product;
     }
-    public function beforeHandleRequest(Event $event, \Phalcon\Mvc\Application $application) {
-        $aclfile = APP_PATH. '/security/acl.cache';
-        if(true == is_file($aclfile)) {
-            $acl = unserialize(file_get_contents($aclfile));
-        }
-        $role = $application->request->get('role');
-        $control = $this->router->getControllerName();
-        $act = $this->router->getActionName();
-       
-        if(!$role || true !== $acl->isAllowed($role, "$control", "$act")) {
-            echo "Access denied("; die;
-        } else {
-          
-        }
+    public function beforeHandleRequest(Event $event, \Phalcon\Mvc\Application $application) 
+    {
 
+        $aclfile = APP_PATH . '/security/acl.cache';
+        $controller = ucwords($this->router->getControllerName());
+        $action = $this->router->getActionName();
+        $bearer = $application->request->get('bearer') ?? 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImN0eSI6ImFwcGxpY2F0aW9uXC9qc29uIn0.eyJhdWQiOlsiaHR0cHM6XC9cL3RhcmdldC5waGFsY29uLmlvIl0sImV4cCI6MTY0ODgxNDkwNSwianRpIjoiYWJjZDEyMzQ1Njc4OSIsImlhdCI6MTY0ODcyODUwNSwiaXNzIjoiaHR0cHM6XC9cL3BoYWxjb24uaW8iLCJuYmYiOjE2NDg3Mjg0NDUsInN1YiI6ImFkbWluIn0.hJp7gDMRd9lKI8DEvlEe7elakDzJgmMaDYtOcNH35hkJ4jzj28V-LTLDMVWKYueJcNoc9ToZo1wkQW_vRA-TqA';
+        // print_r($bearer);
+        // die;
+        if ($bearer) {
+            if (true === is_file($aclfile)) {
+                $acl = unserialize(file_get_contents($aclfile));
+                try {
+                    $parser = new Parser();
+                    $tokenobject = $parser->parse($bearer);
+                    $now = new \DateTimeImmutable();
+                    $expire = $now->getTimestamp();
+                    $validator = new Validator($tokenobject, 100);
+                    $validator->validateExpiration($expire);
+                    $claims = $tokenobject->getClaims()->getPayload();
+                    // print_r($acl);
+                    // die;
+                } catch (\Exception $e) {
+                    echo "bearer not find";
+                    die;
+                }
+                if ($claims['sub'] == 'admin') {
+                    $action = ucwords($this->router->getActionName());
+                }
+
+                if (true !== $acl->isAllowed($claims['sub'], $controller, $action)) {
+                    echo "Access Denied";
+                    // print_r($acl);
+                    die();
+                }
+            }
+        } else {
+
+            echo "we dont find bearer!!";
+            die;
+        }
     }
 }
