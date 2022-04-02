@@ -24,6 +24,7 @@ class OrdersController extends Controller
                 'quantity'
             ]
         );
+        $order->date = Date('y-m-d');
         $values = Setting::find('id = 1');
         $eventsManager = $this->di->get('EventsManager');
         $val = $eventsManager->fire('NotificationListners:checkzip', $order, $values);
