@@ -12,4 +12,5 @@ class MainTask extends Task
     {
         echo 'This is the default task and the default action' . PHP_EOL;
     }
+    
 }

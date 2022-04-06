@@ -21,6 +21,8 @@ echo PHP_EOL;
     $add_comp = $this->locale->_('add_comp');
     $all_comp = $this->locale->_('all_comp');
     $add_user = $this->locale->_('add_user');
+    $login = $this->locale->_('login');
+    $logout = $this->locale->_('logout');
     $lang = $this->locale->_('lang');
     echo "<h1>".$hello."</h1>";
 
@@ -29,6 +31,10 @@ echo PHP_EOL;
         $add_order, 'class' => 'btn btn-primary m-2']
     );
 //    }
+echo $this->tag->linkTo([
+    'login',
+    $login ,'class' => 'btn btn-primary m-2']
+);
 
 // }
 echo $this->tag->linkTo([
@@ -61,6 +67,10 @@ echo $this->tag->linkTo([
     'acl/adduser',
     $add_user, 'class' => 'btn btn-primary m-2']
 );
+echo $this->tag->linkTo([
+    'login/logout',
+    $logout ,'class' => 'btn btn-primary m-2']
+);
 ?>
 
 <p>
@@ -86,4 +96,6 @@ echo $this->tag->linkTo([
         
             }
         </script>
+
+        
 

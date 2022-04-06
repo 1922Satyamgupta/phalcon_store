@@ -12,5 +12,7 @@ $messages = [
     'add_comp'    => 'ajouter un composant',
     'all_comp'    => 'autoriser le composant',
     'add_user'    => 'ajouter un utilisateur',
-    'lang' => 'Langue'
+    'lang' => 'Langue',
+    'login' => 'connexion',
+    'logout' => 'Se déconnecter'
 ];

@@ -67,13 +67,15 @@ class SignupController extends Controller{
 
         $user = new Users();
 
+        $senitize =  new \App\Components\MyEscaper();
+        $takeData = $senitize->senitize();
         $user->assign(
-            $this->request->getPost(),
+            $takeData,
             [
-                'name',
-                'email',
+                'username',
                 'password',
                 'role'
+                
             ]
         );
         $user->role = $jwt;
@@ -91,6 +93,11 @@ class SignupController extends Controller{
             $this->view->message = "Register succesfully";
         }else{
             $this->view->message = "Not Register succesfully due to following reason: <br>".implode("<br>", $user->getMessages());
+            $this->logger->getAdapter('register')->begin();
+
+            $this->logger->error('cannot register due to error in password or username!!');
+
+            $this->logger->getAdapter('register')->commit();
         }
     }
 }

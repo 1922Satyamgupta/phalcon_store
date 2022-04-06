@@ -2,12 +2,7 @@
 
 use Phalcon\Mvc\Controller;
 use Phalcon\Acl\Adapter\Memory;
-use Phalcon\Acl\Component;
-use Phalcon\Acl\Role;
-use Phalcon\Security\JWT\Builder;
 use Phalcon\Security\JWT\Signer\Hmac;
-use Phalcon\Security\JWT\Token\Parser;
-use Phalcon\Security\JWT\Validator;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
@@ -94,6 +89,11 @@ class AclController extends Controller
             );
 
             $success = $user->save();
+            $this->logger->getAdapter('register')->begin();
+
+            $this->logger->alert('user successfully added!!');
+
+            $this->logger->getAdapter('register')->commit();
             header('Location: http://localhost:8080/');
         }
     }

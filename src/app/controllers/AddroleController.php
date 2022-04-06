@@ -2,16 +2,14 @@
 
 use Phalcon\Mvc\Controller;
 
-
 class AddroleController extends Controller
 {
     public function indexAction()
     {
-       
-
-        }
-        public function registerAction() {
-            $addrole = new Roles();
+    }
+    public function registerAction()
+    {
+        $addrole = new Roles();
 
         $addrole->assign(
             $this->request->getPost(),
@@ -19,10 +17,7 @@ class AddroleController extends Controller
                 'role'
             ]
         );
-      
-         $addrole->save();
-        //   header("Location: http://localhost:8080/role");
 
-        }
-    
+        $addrole->save();
+    }
 }

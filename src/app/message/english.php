@@ -1,6 +1,4 @@
 <?php
-
-// app/messages/en.php
 $messages = [
     "hello" => "Hello world",
     'add_order'      => 'add order',
@@ -12,5 +10,6 @@ $messages = [
     'add_comp'    => 'add_component',
     'all_comp'    => 'all_component',
     'add_user'    => 'add_user',
-    'lang' => 'language' 
+    'lang' => 'language',
+    'logout' => 'logout'
 ];

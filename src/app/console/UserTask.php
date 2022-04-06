@@ -5,10 +5,7 @@
 namespace App\Console;
 
 use Phalcon\Cli\Task;
-// use Phalcon\Security\JWT\Builder;
-// use Phalcon\Security\JWT\Signer\Hmac;
-// use Phalcon\Security\JWT\Token\Parser;
-// use Phalcon\Security\JWT\Validator;
+
 use Firebase\JWT\JWT;
 // use Firebase\JWT\Key;
 
@@ -16,24 +13,22 @@ class UserTask extends Task
 {
     public function getTokenAction($role = 'admin')
     {
-       echo $role. PHP_EOL;
+        echo $role . PHP_EOL;
     }
 
     public function deletelogAction()
     {
-        $b = scandir(APP_PATH."/logs/", 1);
-        foreach($b as $val)
-        {
-            if($val!='..' && $val!='.')
-            {
-                unlink(APP_PATH."/logs/$val");
+        $b = scandir(APP_PATH . "/logs/", 1);
+        foreach ($b as $val) {
+            if ($val != '..' && $val != '.') {
+                unlink(APP_PATH . "/logs/$val");
             }
         }
         echo "All File Deleted";
         die();
     }
     public function createTokenAction($role)
-    { 
+    {
         if ($role == 'admin') {
             $key = "example_key";
             $payload = array(
@@ -72,21 +67,26 @@ class UserTask extends Task
 
         echo " Acl cache deleted successfully!!";
     }
-    public function fetchOrdersAction() {
+    public function fetchOrdersAction()
+    {
         $current_date = Date('y-m-d');
         $order =  Orders::findFirst([
-            'conditions'=>'date=:current_date:',
-            'bind'=>[
-                'current_date'=>$current_date
+            'conditions' => 'date=:current_date:',
+            'bind' => [
+                'current_date' => $current_date
             ],
             'order' => 'date DESC'
         ]);
-        echo "Order id: ".$order->id;
-        echo "Order_customer name =".$order->cust_name;
-        echo "Order_customer address =".$order->cust_address;
-        echo "Order_Zipcode =".$order->zipcode;
-        echo "Order_Product = ".$order->products;
-        echo "Order_Quantity =".$order->quantity;
+        echo "Order id: " . $order->id;
+        echo "Order_customer name =" . $order->cust_name;
+        echo "Order_customer address =" . $order->cust_address;
+        echo "Order_Zipcode =" . $order->zipcode;
+        echo "Order_Product = " . $order->products;
+        echo "Order_Quantity =" . $order->quantity;
     }
-
+    public function getCacheAction()
+    {
+        $value = $cache->get('my-key');
+        echo $value;
+    }
 }
